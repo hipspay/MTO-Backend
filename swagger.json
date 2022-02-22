@@ -1,0 +1,2673 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "http://localhost:8080/api",
+      "description": "Local server"
+    }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "MTO Backend Project"
+  },
+  "tags": [
+    {
+      "name": "admin"
+    },
+    {
+      "name": "agent"
+    },
+    {
+      "name": "customer"
+    },
+    {
+      "name": "merchant"
+    }
+  ],
+  "paths": {
+    "/admin/products": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "description": "Get all products which are available on the market place",
+        "operationId": "getAllProducts",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/fromPrice"
+          },
+          {
+            "$ref": "#/components/parameters/toPrice"
+          },
+          {
+            "$ref": "#/components/parameters/shopAddress"
+          },
+          {
+            "$ref": "#/components/parameters/name"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/products/{id}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "description": "Get the specific product with the given id",
+        "operationId": "getProductById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "id must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/merchants": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "description": "Get all merchants which are available on the market place",
+        "operationId": "getAllMerchants",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/name"
+          },
+          {
+            "$ref": "#/components/parameters/shopAddress"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Merchant"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/merchants/{id}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "description": "Get the specific merchant with the given id",
+        "operationId": "getMerchantById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Merchant"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "id must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/orders": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "description": "Get all orders which are available on the marketplace",
+        "operationId": "getOrders",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/fromDeliveryTime"
+          },
+          {
+            "$ref": "#/components/parameters/toDeliveryTime"
+          },
+          {
+            "$ref": "#/components/parameters/fromEscrowTime"
+          },
+          {
+            "$ref": "#/components/parameters/toEscrowTime"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/orders/{id}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "description": "Get the specific order with the given id",
+        "operationId": "getOrderById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "id must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/disputes": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "description": "Get all disputes which are available on the marketplace",
+        "operationId": "getdisputes",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/fromApprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/toApprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/fromDisapprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/toDisapprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/fromCriteriaCount"
+          },
+          {
+            "$ref": "#/components/parameters/toCriteriaCount"
+          },
+          {
+            "$ref": "#/components/parameters/fromReviewCount"
+          },
+          {
+            "$ref": "#/components/parameters/toReviewCount"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Dispute"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/disputes/{id}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "description": "Get the specific dispute with the given id",
+        "operationId": "getDisputeById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dispute"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "id must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/agents": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "description": "Get all agents which are available on the marketplace",
+        "operationId": "getAgents",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/walletAddressToFilter"
+          },
+          {
+            "$ref": "#/components/parameters/agentStatus"
+          },
+          {
+            "$ref": "#/components/parameters/fromScore"
+          },
+          {
+            "$ref": "#/components/parameters/toScore"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Agent"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agent/info/{id}": {
+      "get": {
+        "tags": [
+          "agent"
+        ],
+        "description": "Get the status and score of an agent",
+        "operationId": "getAgentInfo",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "score": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "id must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/profile": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "description": "Get the customer profile information with the given address",
+        "operationId": "getCustomerProfile",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/address"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "customer"
+        ],
+        "description": "Update the customer profile information",
+        "operationId": "updateCustomerProfile",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateCustomer"
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "name must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Update failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/products": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "description": "Get all products which are available on the market place",
+        "operationId": "getAllProductsByCustomer",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/fromPrice"
+          },
+          {
+            "$ref": "#/components/parameters/toPrice"
+          },
+          {
+            "$ref": "#/components/parameters/shopAddress"
+          },
+          {
+            "$ref": "#/components/parameters/name"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/products/{id}": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "description": "Get the specific product with the given id",
+        "operationId": "getProductByIdByCustomer",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "id must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/myproducts": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "description": "Get all products which I purchased",
+        "operationId": "getMyProducts",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/fromPrice"
+          },
+          {
+            "$ref": "#/components/parameters/toPrice"
+          },
+          {
+            "$ref": "#/components/parameters/shopAddress"
+          },
+          {
+            "$ref": "#/components/parameters/name"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/myproducts/{id}": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "description": "Get the specific product belong to the specific wallet address with the given id",
+        "operationId": "getMyProductById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "id must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/myorders": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "description": "Get all orders which are belong to the specific wallet address (Only in_delivery and over_delivery statys, not completed status)",
+        "operationId": "getMyOrders",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/fromDeliveryTime"
+          },
+          {
+            "$ref": "#/components/parameters/toDeliveryTime"
+          },
+          {
+            "$ref": "#/components/parameters/fromEscrowTime"
+          },
+          {
+            "$ref": "#/components/parameters/toEscrowTime"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/myorders/{id}": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "description": "Get the specific order belong to the specific wallet address with the given id",
+        "operationId": "getMyOrderById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/disputes": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "description": "Get all disputes which are belong to the specific wallet address",
+        "operationId": "getDisputes",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/fromApprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/toApprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/fromDisapprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/toDisapprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/fromCriteriaCount"
+          },
+          {
+            "$ref": "#/components/parameters/toCriteriaCount"
+          },
+          {
+            "$ref": "#/components/parameters/fromReviewCount"
+          },
+          {
+            "$ref": "#/components/parameters/toReviewCount"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Dispute"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/disputes/{id}": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "description": "Get the specific dispute belong to the specific wallet address with the given id",
+        "operationId": "getDisputeByIdBycustomer",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dispute"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/profile": {
+      "get": {
+        "tags": [
+          "merchant"
+        ],
+        "description": "Get the merchant profile information with the given address",
+        "operationId": "getMerchantProfile",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/address"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Merchant"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "merchant"
+        ],
+        "description": "Update the merchant profile information",
+        "operationId": "updateMerchantProfile",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateCustomer"
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Merchant"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "address must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Update failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/products": {
+      "get": {
+        "tags": [
+          "merchant"
+        ],
+        "description": "Get all products which are belong to a specific merchant",
+        "operationId": "getProductsByMerchant",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/fromPrice"
+          },
+          {
+            "$ref": "#/components/parameters/toPrice"
+          },
+          {
+            "$ref": "#/components/parameters/shopAddress"
+          },
+          {
+            "$ref": "#/components/parameters/name"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "merchant"
+        ],
+        "description": "Create a new product",
+        "operationId": "createProduct",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/NewProduct"
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "name must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/products/{id}": {
+      "get": {
+        "tags": [
+          "merchant"
+        ],
+        "description": "Get the specific product with the given id",
+        "operationId": "getProductByMerchantById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id"
+          },
+          {
+            "$ref": "#/components/parameters/secretToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "id must be a number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "merchant"
+        ],
+        "description": "update the specific product with the given id",
+        "operationId": "updateProductByMerchantById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id"
+          },
+          {
+            "$ref": "#/components/parameters/secretToken"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/NewProduct"
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "name must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Cannot find the data to update"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "merchant"
+        ],
+        "description": "delete the specific product with the given id",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id"
+          },
+          {
+            "$ref": "#/components/parameters/secretToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Product removed successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "id must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Cannot find the data to delete"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/orders": {
+      "get": {
+        "tags": [
+          "merchant"
+        ],
+        "description": "Get all orders which are belong to a specific merchant",
+        "operationId": "getOrdersByMerchant",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/fromDeliveryTime"
+          },
+          {
+            "$ref": "#/components/parameters/toDeliveryTime"
+          },
+          {
+            "$ref": "#/components/parameters/fromEscrowTime"
+          },
+          {
+            "$ref": "#/components/parameters/toEscrowTime"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/orders/{id}": {
+      "get": {
+        "tags": [
+          "merchant"
+        ],
+        "description": "Get the specific order with the given id",
+        "operationId": "getOrderByMerchantById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id"
+          },
+          {
+            "$ref": "#/components/parameters/secretToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "id must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/disputes": {
+      "get": {
+        "tags": [
+          "merchant"
+        ],
+        "description": "Get all disputes which are belong to a specific merchant",
+        "operationId": "getdisputesByMerchant",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/secretToken"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/fromApprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/toApprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/fromDisapprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/toDisapprovedCount"
+          },
+          {
+            "$ref": "#/components/parameters/fromCriteriaCount"
+          },
+          {
+            "$ref": "#/components/parameters/toCriteriaCount"
+          },
+          {
+            "$ref": "#/components/parameters/fromReviewCount"
+          },
+          {
+            "$ref": "#/components/parameters/toReviewCount"
+          },
+          {
+            "$ref": "#/components/parameters/sortBy"
+          },
+          {
+            "$ref": "#/components/parameters/order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Dispute"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidFilterMessage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/disputes/{id}": {
+      "get": {
+        "tags": [
+          "merchant"
+        ],
+        "description": "Get the specific dispute with the given id",
+        "operationId": "getDisputeByMerchantById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/id"
+          },
+          {
+            "$ref": "#/components/parameters/secretToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dispute"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "id must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoDataFoundMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "id": {
+        "in": "path",
+        "name": "id",
+        "schema": {
+          "type": "integer"
+        },
+        "required": true
+      },
+      "secretToken": {
+        "in": "header",
+        "name": "secret_token",
+        "schema": {
+          "type": "string"
+        },
+        "required": true
+      },
+      "walletAddress": {
+        "in": "header",
+        "name": "wallet_address",
+        "schema": {
+          "type": "string",
+          "example": "0x12345abcde7890"
+        },
+        "required": true
+      },
+      "signature": {
+        "in": "header",
+        "name": "signature",
+        "schema": {
+          "type": "string"
+        },
+        "required": true
+      },
+      "address": {
+        "in": "query",
+        "name": "address",
+        "schema": {
+          "type": "string"
+        },
+        "required": true
+      },
+      "walletAddressToFilter": {
+        "in": "query",
+        "name": "walletAddress",
+        "schema": {
+          "type": "string",
+          "example": "0x12345abcde7890"
+        }
+      },
+      "agentStatus": {
+        "in": "query",
+        "name": "status",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "init",
+            "waiting",
+            "review",
+            "pending_01",
+            "pending_02",
+            "earned",
+            "lost",
+            "ban"
+          ]
+        }
+      },
+      "page": {
+        "in": "query",
+        "name": "page",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "limit": {
+        "in": "query",
+        "name": "limit",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "fromPrice": {
+        "in": "query",
+        "name": "fromPrice",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "toPrice": {
+        "in": "query",
+        "name": "toPrice",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "fromScore": {
+        "in": "query",
+        "name": "fromScore",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "toScore": {
+        "in": "query",
+        "name": "toScore",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "shopAddress": {
+        "in": "query",
+        "name": "shopAddress",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "name": {
+        "in": "query",
+        "name": "name",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "fromDeliveryTime": {
+        "in": "query",
+        "name": "fromDeliveryTime",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "toDeliveryTime": {
+        "in": "query",
+        "name": "toDeliveryTime",
+        "schema": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "fromEscrowTime": {
+        "in": "query",
+        "name": "fromEscrowTime",
+        "schema": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "toEscrowTime": {
+        "in": "query",
+        "name": "toEscrowTime",
+        "schema": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "fromApprovedCount": {
+        "in": "query",
+        "name": "fromApprovedCount",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "toApprovedCount": {
+        "in": "query",
+        "name": "toApprovedCount",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "fromDisapprovedCount": {
+        "in": "query",
+        "name": "fromDisapprovedCount",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "toDisapprovedCount": {
+        "in": "query",
+        "name": "toDisapprovedCount",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "fromCriteriaCount": {
+        "in": "query",
+        "name": "fromCriteriaCount",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "toCriteriaCount": {
+        "in": "query",
+        "name": "toCriteriaCount",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "fromReviewCount": {
+        "in": "query",
+        "name": "fromReviewCount",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "toReviewCount": {
+        "in": "query",
+        "name": "toReviewCount",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "sortBy": {
+        "in": "query",
+        "name": "sortBy",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "order": {
+        "in": "query",
+        "name": "order",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "DESC",
+            "ASC"
+          ]
+        }
+      }
+    },
+    "schemas": {
+      "Agent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "dispute": {
+            "type": "integer",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Dispute"
+              }
+            ]
+          },
+          "walletAddress": {
+            "type": "string",
+            "example": "0x12345abcde7890"
+          },
+          "score": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "init",
+              "waiting",
+              "review",
+              "pending_01",
+              "pending_02",
+              "earned",
+              "lost",
+              "ban"
+            ]
+          }
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "walletAddress": {
+            "type": "string",
+            "example": "0x12345abcde7890"
+          },
+          "shippingAddress": {
+            "type": "string"
+          },
+          "externalLink": {
+            "type": "string"
+          }
+        }
+      },
+      "Dispute": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "approvedCount": {
+            "type": "integer"
+          },
+          "disapprovedCount": {
+            "type": "integer"
+          },
+          "reviewCount": {
+            "type": "integer"
+          },
+          "criteriaCount": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "default": "init",
+            "enum": [
+              "init",
+              "waiting",
+              "review",
+              "fail",
+              "win"
+            ]
+          }
+        }
+      },
+      "Merchant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "walletAddress": {
+            "type": "string",
+            "example": "0x12345abcde7890"
+          },
+          "shippingAddress": {
+            "type": "string"
+          },
+          "externalLink": {
+            "type": "string"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "product": {
+            "type": "integer",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Product"
+              }
+            ]
+          },
+          "customer": {
+            "type": "integer",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Customer"
+              }
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "in_delivery",
+              "over_delivery",
+              "completed"
+            ]
+          },
+          "deliveryTime": {
+            "type": "string",
+            "format": "date"
+          },
+          "escrowTime": {
+            "type": "string",
+            "format": "date"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "merchant": {
+            "type": "integer",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Merchant"
+              }
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "shopAddress": {
+            "type": "string"
+          }
+        }
+      },
+      "UnauthorizedMessage": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Invalid JWT"
+          }
+        }
+      },
+      "NoDataFoundMessage": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "No data found"
+          }
+        }
+      },
+      "InvalidFilterMessage": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "page must be greater than or equal to 1"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "NewCustomer": {
+        "description": "Customer object that needs to be added to the store",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "walletAddress": {
+                  "type": "string",
+                  "example": "0x12345abcde7890"
+                },
+                "shippingAddress": {
+                  "type": "string",
+                  "example": "shipping address example"
+                },
+                "externalLink": {
+                  "type": "string",
+                  "example": "www.customer.example"
+                }
+              }
+            }
+          }
+        },
+        "required": true
+      },
+      "UpdateCustomer": {
+        "description": "Customer object that needs to be updated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "example": "0x12345abcde7890"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "shippingAddress": {
+                  "type": "string",
+                  "example": "shipping address example"
+                },
+                "externalLink": {
+                  "type": "string",
+                  "example": "www.customer.example"
+                }
+              }
+            }
+          }
+        },
+        "required": true
+      },
+      "UpdateMerchant": {
+        "description": "Merchant object that needs to be updated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "example": "0x12345abcde7890"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "shippingAddress": {
+                  "type": "string",
+                  "example": "shipping address example"
+                },
+                "externalLink": {
+                  "type": "string",
+                  "example": "www.customer.example"
+                }
+              }
+            }
+          }
+        },
+        "required": true
+      },
+      "NewProduct": {
+        "description": "Product object that needs to be added to the store",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "image": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "shopAddress": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": true
+      }
+    }
+  }
+}
