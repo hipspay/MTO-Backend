@@ -1,0 +1,76 @@
+version: '3.6'
+
+x-baseService: &baseService
+  networks:
+    - api-network
+  restart: always
+
+services:
+  api:
+    <<: *baseService
+    container_name: api
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+    environment:
+         - NODE_ENV=development
+         - PORT=8080
+         - DATABASE_TYPE=PostgreSQL
+         - DATABASE_NAME=mto_db
+         - DATABASE_HOST=database
+         - DATABASE_PORT=5432
+         - DATABASE_USER=postgres
+         - DATABASE_PASSWORD=root
+         - JWT_EXPIRATION_MINUTES=12000
+         - JWT_SECRET=bA2xcjpf8y5aSUFsNB2qN5yymUBSs6es3qHoFpGkec75RCeBb8cpKauGefw5qy4
+         - SIGNED_STRING=Authenticate
+         - INFURA_URL=wss://ropsten.infura.io/ws/v3/96f9b4f3df8a4220a67f68df793d67ff
+         - ALCHEMY_URL=https://eth-ropsten.alchemyapi.io/v2/KHxvMBa3vqpfcCOF-S59dc2CrLSYN2Fo
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+    links:
+      - database
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start
+
+  database:
+    <<: *baseService
+    container_name: database
+    image: postgres:alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=mto_db
+    volumes:
+     - db-data:/var/lib/postgresql/data
+
+  database.admin:
+    <<: *baseService
+    container_name: database.admin
+    image: dpage/pgadmin4
+    ports:
+      - "5050:5050"
+    environment:
+      PGADMIN_LISTEN_PORT: 5050
+      PGADMIN_DEFAULT_EMAIL: zetiuy@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: mycurrentpassword
+    depends_on:
+      - database
+    links:
+      - database
+
+
+volumes:
+  db-data:
+
+networks:
+  api-network:

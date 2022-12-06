@@ -24,9 +24,7 @@ export class DisputeController {
             if (disputes?.length > 0) {
                 res.json(disputes);
             } else {
-                res.status(404).json({
-                    message: 'No data found',
-                });
+                res.json([]);
             }
         } catch (err) {
             next(err);
@@ -46,10 +44,27 @@ export class DisputeController {
             if (result?.totalCount > 0) {
                 res.json(result);
             } else {
-                res.status(404).json({
-                    message: 'No data found',
-                });
+                res.json([]);
             }
+        } catch (err) {
+            next(err);
+        }
+    };
+
+    public listAgentDisputes = async (
+        req: IRequest,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const result = await this.disputeService.getAgentDisputes(
+                req.query as IDisputeFilterQuery
+            );
+            // if (result?.totalCount > 0) {
+                res.json(result);
+            // } else {
+            //     res.json([]);
+            // }
         } catch (err) {
             next(err);
         }
@@ -61,8 +76,9 @@ export class DisputeController {
         next: NextFunction
     ) => {
         try {
+            console.log(req.headers.walletaddress);
             const merchant = await this.merchantService.getMerchantByAddress(
-                req.address
+                req.headers.walletaddress as string
             );
             const result = await this.disputeService.getDisputesByMerchant(
                 merchant.id,
@@ -72,9 +88,7 @@ export class DisputeController {
             if (result.totalCount > 0) {
                 res.json(result);
             } else {
-                res.status(404).json({
-                    message: 'No data found',
-                });
+                res.json([]);
             }
         } catch (err) {
             next(err);
@@ -120,9 +134,7 @@ export class DisputeController {
             if (dispute) {
                 res.json(dispute);
             } else {
-                res.status(404).json({
-                    message: 'No data found',
-                });
+                res.json({});
             }
         } catch (err) {
             next(err);
@@ -144,9 +156,7 @@ export class DisputeController {
             if (dispute) {
                 res.json(dispute);
             } else {
-                res.status(404).json({
-                    message: 'No data found',
-                });
+                res.json({});
             }
         } catch (err) {
             next(err);

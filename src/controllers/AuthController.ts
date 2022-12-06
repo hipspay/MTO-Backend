@@ -10,6 +10,8 @@ import AdminService from '../services/AdminService';
 import { IRequest } from '../shared/types/base.types';
 import { sign } from '../utils';
 import { AgentStatus } from '../shared/constants/global.constants';
+import {Role} from '../shared/types/auth.types';
+import { NextFunction } from 'express';
 
 const web3 = new Web3(process.env.INFURA_URL);
 export class AuthController {
@@ -23,32 +25,81 @@ export class AuthController {
         this.agentService = new AgentService();
         this.adminService = new AdminService();
     }
-
-    public authenticateMerchant = async (req: IRequest, res: Response) => {
+    public authenticateUser = async (req: IRequest, res: Response,  next: NextFunction, role: Role) => {
+        const { signature, challenge, appkey } = req.headers;
+        const recovered = web3.eth.accounts.recover(
+            challenge as string,
+            signature as string
+        );
+        let user;
+        switch(role){
+            case 'customer':
+                user = await this.customerService.getCustomerByAddress(recovered);
+                if (!user) {
+                    user = await this.customerService.createCustomer({
+                        walletAddress: recovered,
+                    });
+                }
+                break;
+            case 'admin':
+                    user = await this.adminService.getAdminByAddress(recovered);
+                    if (!user) {
+                        user = await this.adminService.createAdmin({
+                            walletAddress: recovered,
+                        });
+                    }
+                    break;
+            case 'agent':
+                user = await this.agentService.getAgentByAddress(recovered);
+                if (!user) {
+                    user = await this.agentService.createAgent({
+                        name: 'recovered',
+                        score:100,
+                        status: AgentStatus.INIT,
+                        walletAddress: recovered
+                    });
+                }
+                break;
+            case 'merchant':
+                    user = await this.merchantService.getMerchantByAddress(recovered)
+                    if (!user) {
+                        user = await await this.merchantService.createMerchant({
+                            walletAddress: recovered,
+                            appKey: appkey as string
+                        });
+                    }
+                    break;    
+            default:
+                res.json({ error: 'Role/User Not found' });    
+        }
+        req.address = recovered;
+        req.id = user.id;
+        req.role = role;
+        return  next();
+    }
+    public authenticateMerchant = async (req: IRequest, res: Response, next: NextFunction) => {
         try {
-            const { signature } = req.headers;
+            const { signature, appsecret, appkey, challenge } = req.headers;
             const recovered = web3.eth.accounts.recover(
-                process.env.SIGNED_STRING,
+                challenge as string,
                 signature as string
             );
-            let merchant = await this.merchantService.getMerchantByAddress(
-                recovered
+            let merchant = await this.merchantService.getMerchantByAddressAndApp(
+                recovered,
+                appkey as string
             );
             if (!merchant) {
                 merchant = await this.merchantService.createMerchant({
                     walletAddress: recovered,
+                    appKey: appkey as string,
+                    appSecret: appsecret as string
                 });
             }
-
-            return res.json({
-                token: sign({
-                    id: merchant.id,
-                    role: 'merchant',
-                    address: recovered,
-                }),
-            });
+            req.address = recovered;
+            req.id = merchant.id;
+            req.role = 'merchant';
+            return  next();
         } catch (error) {
-            console.log(error);
             return res
                 .status(httpStatus.INTERNAL_SERVER_ERROR)
                 .send({ message: 'something went wrong on server.' });
@@ -71,7 +122,6 @@ export class AuthController {
                     walletAddress: recovered,
                 });
             }
-
             return res.json({
                 token: sign({
                     id: customer.id,

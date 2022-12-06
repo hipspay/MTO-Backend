@@ -12,6 +12,8 @@ import { connect } from './typeorm';
 
 connect().then(() => {
     console.log('DB is connected');
+},err=>{
+    console.log(err);
 });
 
 const app = express();

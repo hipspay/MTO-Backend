@@ -34,6 +34,7 @@ const update = {
         name: Joi.string(),
         shippingAddress: Joi.string(),
         externalLink: Joi.string(),
+        image: Joi.string(),
     }),
 };
 

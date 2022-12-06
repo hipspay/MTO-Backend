@@ -7,8 +7,8 @@ const list = {
             'init',
             'waiting',
             'review',
-            'pending_01',
-            'pending_02',
+            'pending_approved',
+            'pending_disapproved',
             'earned',
             'lost',
             'ban'

@@ -13,5 +13,9 @@ router.use('/customer', customerRoute);
 router.use('/merchant', merchantRoute);
 router.use('/admin', adminRoute);
 router.use('/agent', agentRoute);
+router.use('/check', function(req, res, next) {
+
+  return res.json({status: 'ok'});
+});
 
 export default router;

@@ -5,6 +5,8 @@ export interface ICreateMerchant {
     walletAddress: string;
     shippingAddress?: string;
     externalLink?: string;
+    appKey: string,
+    appSecret?: string
 }
 
 export interface IMerchantFilterQuery extends IBaseFilterQuery {

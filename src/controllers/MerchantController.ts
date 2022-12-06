@@ -79,9 +79,9 @@ export class MerchantController {
         next: NextFunction
     ) => {
         try {
-            const { address } = req;
+            const { walletaddress } = req.headers;
             const merchant = await this.merchantService.getMerchantByAddress(
-                address as string
+                walletaddress as string
             );
 
             if (merchant) {

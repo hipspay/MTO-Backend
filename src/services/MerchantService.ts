@@ -21,9 +21,8 @@ export default class MerchantService {
         });
 
         if (existSameWallet?.length > 0) {
-            return Promise.reject('WALLET_ALREADY_EXIST');
+            return Promise.reject('MERCHANT_WALLET_ALREADY_EXIST');
         }
-
         return await merchantRepository.save(createMerchantData);
     }
 
@@ -73,6 +72,14 @@ export default class MerchantService {
             where: { walletAddress: address },
         });
     }
+    public async getMerchantByAddressAndApp(address: string, appKey): Promise<Merchants> {
+        return await getRepository(Merchants).findOne({
+            where: { 
+                walletAddress: address,
+                appKey: appKey
+            },
+        });
+    }
 
     public async getMerchantById(id: number): Promise<Merchants> {
         return await getRepository(Merchants).findOne(id);
@@ -92,7 +99,7 @@ export default class MerchantService {
             return null;
         }
 
-        const { name, shippingAddress, externalLink } = updateMerchantData;
+        const { name, shippingAddress, externalLink, image} = updateMerchantData;
 
         if (name) {
             merchant.name = name;
@@ -105,6 +112,12 @@ export default class MerchantService {
         if (externalLink) {
             merchant.externalLink = externalLink;
         }
+
+        if (image) {
+            merchant.image = image;
+        }
+
+
 
         return await merchantRepository.save(merchant);
     }

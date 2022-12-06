@@ -86,8 +86,9 @@ export class OrderController {
         next: NextFunction
     ) => {
         try {
+            console.log(req.headers.walletaddress);
             const merchant = await this.merchantService.getMerchantByAddress(
-                req.address
+                req.headers.walletaddress as string
             );
             const result = await this.orderService.getOrdersByMerchant(
                 merchant.id,
@@ -97,9 +98,7 @@ export class OrderController {
             if (result.totalCount > 0) {
                 res.json(result);
             } else {
-                res.status(404).json({
-                    message: 'No data found',
-                });
+                res.json([]);
             }
         } catch (err) {
             next(err);

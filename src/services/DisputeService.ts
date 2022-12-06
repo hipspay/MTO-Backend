@@ -5,12 +5,15 @@ import {
     getRepository,
     LessThanOrEqual,
     MoreThanOrEqual,
+    In,
+    Brackets
 } from 'typeorm';
 
 import { Customers } from '../entities/Customers';
 import { Disputes } from '../entities/Disputes';
 import { Orders } from '../entities/Orders';
 import { IDisputeFilterQuery } from '../shared/types/dispute.types';
+import { DisputeStatus } from '../shared/constants/global.constants';
 
 @Service()
 export default class DisputeService {
@@ -107,6 +110,32 @@ export default class DisputeService {
         });
     }
 
+    public async getAgentDisputes (query: IDisputeFilterQuery): Promise<{ totalCount: number; disputes: Disputes[] }> {
+        const disputeRepository = getRepository(Disputes);
+        const { page, limit } = query;
+        
+        const totalCount = await disputeRepository.createQueryBuilder('Disputes')
+            .where({status: In([DisputeStatus.INIT, DisputeStatus.WAITING, DisputeStatus.REVIEW])})
+            .andWhere(new Brackets((query) => {
+                query.where('"appliedAgentsCount" < "disputeReviewGroupCount"')
+                .orWhere('"createdAt" < :time', {time : new Date(new Date().getTime() - parseInt(process.env.MAX_REVIEW_DELAY))})
+                }))
+            .getCount();
+        
+
+        const disputes = await disputeRepository.createQueryBuilder()
+            .select(['"id"', '"appliedAgentsCount"', '"createdAt"', '"disputeId"', '"disputeReviewGroupCount"', '"reviewCount"'])
+            .where({status: In([DisputeStatus.INIT, DisputeStatus.WAITING, DisputeStatus.REVIEW])})
+            .andWhere(new Brackets((query) => {
+                query.where('"appliedAgentsCount" < "disputeReviewGroupCount"')
+                .orWhere('"createdAt" < :time', {time : new Date(new Date().getTime() - parseInt(process.env.MAX_REVIEW_DELAY))})
+                }))
+            .skip((+page - 1) * +limit)
+            .take(+limit)
+            .orderBy('id', 'DESC')
+            .getRawMany();
+        return { totalCount, disputes };         
+    }
     public async getDisputesByAddress(
         walletAddress: string,
         query: IDisputeFilterQuery
@@ -148,7 +177,7 @@ export default class DisputeService {
             where: filter,
             relations: ['order', 'order.product'],
             order: {
-                [sortBy ? sortBy : 'id']: order ? order : 'ASC',
+                [sortBy ? sortBy : 'id']: order ? order : 'DESC',
             },
             skip: (+page - 1) * +limit,
             take: +limit,

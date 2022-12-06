@@ -134,7 +134,7 @@ export default class OrderService {
             ],
             relations: ['product'],
             order: {
-                [sortBy ? sortBy : 'id']: order ? order : 'ASC',
+                [sortBy ? sortBy : 'id']: order ? order : 'DESC',
             },
             skip: (+page - 1) * +limit,
             take: +limit,

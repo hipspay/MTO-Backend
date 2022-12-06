@@ -72,7 +72,7 @@ export default class ProductService {
         const products = await getRepository(Products).find({
             where: filter,
             order: {
-                [sortBy ? sortBy : 'id']: order ? order : 'ASC',
+                [sortBy ? sortBy : 'id']: order ? order : 'DESC',
             },
             skip: (+page - 1) * +limit,
             take: +limit,

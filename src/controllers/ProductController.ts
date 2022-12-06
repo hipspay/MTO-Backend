@@ -39,7 +39,7 @@ export class ProductController {
     ) => {
         try {
             const merchant = await this.merchantService.getMerchantByAddress(
-                req.address
+                req.headers.walletaddress as string
             );
             const result = await this.productService.getProductsByMerchant(
                 merchant.id,
@@ -49,9 +49,7 @@ export class ProductController {
             if (result?.totalCount > 0) {
                 return res.json(result);
             } else {
-                return res.status(404).json({
-                    message: 'No data found',
-                });
+                return res.json([]);
             }
         } catch (err) {
             next(err);
@@ -117,7 +115,6 @@ export class ProductController {
                 merchant: merchant,
                 ...req.body,
             });
-
             res.json(product);
         } catch (err) {
             next(err);

@@ -12,6 +12,7 @@ import * as orderValidation from '../shared/validations/order.validation';
 import * as productValidation from '../shared/validations/product.validation';
 
 const customerRoute = Router();
+customerRoute.all('*', authenticate('customer')); // todo
 customerRoute.get(
     '/products',
     validate(productValidation.list),
@@ -23,7 +24,7 @@ customerRoute.get(
     productController.getById
 );
 
-customerRoute.all('*', authenticate('customer'));
+//customerRoute.all('*', authenticate('customer'));
 
 customerRoute.put(
     '/profile',
@@ -77,6 +78,12 @@ customerRoute.put(
     '/disputes/:id',
     validate(disputeValidation.actById),
     disputeController.updateDisputeById
+);
+
+customerRoute.get(
+    '/disputesById/:id',
+    validate(disputeValidation.actById),
+    disputeController.getByDisputeId
 );
 
 customerRoute.get(
